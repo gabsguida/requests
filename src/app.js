@@ -22,6 +22,8 @@ app.get('/user/:id', (req, res) => {
     let results = JSON.parse(data);
     results.forEach(person => {
         if (person.id == req.params["id"]){
+        //    var waitTill = new Date(new Date().getTime() + 5000);
+        //    while (waitTill > new Date()){}
             res.send(JSON.stringify(person));
         };
     });    

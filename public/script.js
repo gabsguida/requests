@@ -9,7 +9,7 @@ $(document).ready(function(){
         success: function(results){
             let output = "";
             results.forEach(arrElement => {
-                output += `<div class="card"><h2>${arrElement.name}</h2><p>${arrElement.city}</p></div>`;
+                output += `<div class="card"><h2 data-id="${arrElement.id}">${arrElement.name}</h2></div>`;
             })
             // função jquery que busca um elemento a partir de um seletor css (class, id, tag...)
             $("#pessoas").html(output);
@@ -18,5 +18,22 @@ $(document).ready(function(){
             console.log(ajaxObject, status, exception);
         }
     }
-    $.ajax(params);    
+    $.ajax(params);
+    
+    $(document).on("click", "h2", function(event){
+        let detalhe = {
+            url: "/user/" + $(this).data("id"),
+            success: function(results){
+                let pessoa = JSON.parse(results);
+                let output = `<h2>${pessoa.name}</h2><p>${pessoa.city}</p>`; 
+                $("#detalhes").html(output);
+                $("#detalhes").removeClass("loading");
+            },
+            beforeSend: function(){
+                $("#detalhes").html("");
+                $("#detalhes").addClass("loading");
+            }
+        }
+        $.ajax(detalhe);
+    })
 })
